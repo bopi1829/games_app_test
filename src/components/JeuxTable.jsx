@@ -6,6 +6,7 @@ export default function JeuxTable({jeux, filterText, inStockOnly}){
   //console.log("JeuxTable: ", jeux)
 
   const rows =[]
+  let lastCategory = null
   jeux.forEach(jeu => {
     if(jeu.name.toLowerCase().indexOf(filterText.toLowerCase()) === -1) {
       return
@@ -13,7 +14,11 @@ export default function JeuxTable({jeux, filterText, inStockOnly}){
     if (inStockOnly && !jeu.stocked) {
       return
     }
+    if (jeu.category !== lastCategory) {
+      rows.push(<JeuxCategory key={jeu.category} category={jeu.category} />)
+    }
     rows.push(<JeuxRow key={jeu.name} jeu={jeu} />)
+    lastCategory = jeu.category
   });
 
   return (
@@ -27,7 +32,6 @@ export default function JeuxTable({jeux, filterText, inStockOnly}){
       </thead>
       <tbody>
         {rows}
-        <JeuxCategory category={"FPS"} />
       </tbody>
     </table>
     </div>
